@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+package api;
+
+
+option go_package = "AMaslov-app/proto/api/v1;v1";
+
+
+import "google/protobuf/timestamp.proto";
+
+
+
+service MediaService {
+  // save file
+  rpc Upload (UploadRequest) returns (UploadResponse) {
+
+  }
+
+  // get file content
+  rpc Download (DownloadRequest) returns (DownloadResponse) {
+
+  }
+
+  // get media info
+  rpc GetInfo (GetInfoRequest) returns (GetListResponse) {
+
+  }
+
+  // get list
+  rpc GetList (GetListRequest) returns (GetListResponse) {
+
+  }
+  // delete file
+  rpc Delete (DeleteRequest) returns (DeleteResponse) {
+
+  }
+
+}
+
+message UploadRequest {
+  bytes file = 1 ;
+  string full_name = 2;
+}
+
+// Response message for `Upload` method.
+message UploadResponse {
+  uint64 resource_id = 1;
+  uint64 size = 2;
+  uint32 duration = 3;
+  string name = 4;
+  string extension = 5;
+  string description = 6;
+  google.protobuf.Timestamp date_upload = 7;
+}
+
+// Request message for `Download` method.
+message DownloadRequest {
+  uint64 resource_id = 1 ;
+}
+
+// Response message for `Download` method.
+message DownloadResponse {
+  optional bytes file = 1;
+  string full_name = 2;
+  uint64 resource_id = 3;
+}
+
+// Request message for `GetList` method.
+message GetListRequest {
+  optional uint64 resource_id = 1;
+  optional string name = 2;
+  optional google.protobuf.Timestamp date_from = 3;
+  optional google.protobuf.Timestamp date_to = 4;
+  optional uint32 limit = 5;
+  optional uint64 offset = 6;
+}
+
+// Response message for `GetList` and `GetInfo` method.
+message GetListResponse {
+  repeated GetInfoResponse media_records = 1;
+}
+
+// Request message for `GetInfo` method.
+message GetInfoRequest {
+  repeated uint64 resource_ids = 1 ;
+}
+
+message GetInfoResponse {
+  uint64 resource_id = 1;
+  uint64 size = 2;
+  uint32 duration = 3;
+  string name = 4;
+  string extension = 5;
+  string description = 6;
+  google.protobuf.Timestamp date_upload = 7;
+}
+
+// Request message for `Delete` method.
+message DeleteRequest {
+  repeated uint64 resource_ids = 1;
+}
+
+// Response message for `Delete` method.
+message DeleteResponse {}
